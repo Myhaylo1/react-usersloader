@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { getUsers } from './../../api';
+import {getUsers} from './../../api';
 import UsersList from '../UsersList';
 
 class UsersLoader extends Component {
@@ -16,11 +16,11 @@ class UsersLoader extends Component {
   }
 
   loadUsers = () => {
-    const { currentPage } = this.state;
+    const {currentPage} = this.state;
     this.setState({
       isFetching: true,
     });
-    getUsers({ page: currentPage }).then(
+    getUsers({page: currentPage}).then(
       data => {
         this.setState({
           users: data.results,
@@ -36,23 +36,39 @@ class UsersLoader extends Component {
     );
   };
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(this.state.currentPage !== prevState.currentPage){
+      this.loadUsers()
+    }
+  }
+
   componentDidMount() {
     this.loadUsers();
   }
 
   render() {
-    const { isFetching, users, error, currentPage } = this.state;
+    const {isFetching, users, error, currentPage} = this.state;
 
     if (error) {
-      return <div>Loading...</div>;
+      return <div>Error</div>;
+
     }
     if (isFetching) {
-      return <div>Error...</div>;
+      return <div>Loading...</div>;
     }
     return (
       <>
         <div>
-          <button onClick={() => { this.loadUsers(1) }}>{currentPage}</button>
+          <button onClick={() => {
+            this.setState({
+              currentPage: currentPage - 1,
+            })
+          }}>{currentPage - 1}</button>
+          <button onClick={() => {
+            this.setState({
+              currentPage: currentPage + 1,
+            })
+          }}>{currentPage + 1}</button>
         </div>
         <ul>
           {users.map(u => (
@@ -63,4 +79,5 @@ class UsersLoader extends Component {
     );
   }
 }
+
 export default UsersLoader;
