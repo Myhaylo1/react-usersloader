@@ -1,0 +1,20 @@
+{
+  "api": {
+    "baseUrl": "https://randomuser.me:443/api/",
+    "seed": "fd2020-1",
+    "user": {
+      "fields": [
+        "id",
+        "email",
+        "name",
+        "picture",
+        "gender"
+      ],
+      "queryParams": [
+        "seed",
+        "page",
+        "results"
+      ]
+    }
+  }
+}
